@@ -1,39 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useDebugValue, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Top from './Top';
-import { AsyncStorage } from 'react-native';
-import { AuthContext } from '../navigation/AuthContext';
-const Login = ({ navigation, route }) => {
-    const { login } = useContext(AuthContext);
+
+const Forgot = ({ navigation, route }) => {
+
     const [usrinp, updateUsrInp] = useState('');
-    const [usrpass, updateUsrPass] = useState('');
+
     const [data, setData] = useState([]);
     const [user, setUser] = useState(null);
     const changeone = (txt1) => {
         updateUsrInp(txt1);
     }
-    const changetwo = (txt2) => {
-        updateUsrPass(txt2);
-    }
 
-    const myFunc = async (txt) => {
+
+    const myFunc = (txt) => {
         console.log("My Value is " + txt);
-        if (txt == 0) {
-            alert("Incorrect Credentials");
-        } else {
-            try {
-                AsyncStorage.setItem('token', usrinp);
-            } catch (error) {
-                // Error saving data  
-            }
-
+        if (txt == 1) {
+            alert("Please check your Email for new password!");
+            navigation.navigate('Login');
+        } else if(txt == 2){
+            alert("User not Found! Please register to continue.");
+            navigation.navigate('Register');
+        }else{
+            alert("Please try again later");
+            navigation.navigate('Main');
         }
-
     }
     const updateData = (t1, t2) => {
-        fetch("http://helixsmartlabs.in/app/dashboard/login.php?email=" + t1 + "&password=" + t2)
+        setUser("http://helixsmartlabs.in/app/dashboard/forgot.php?email=" + t1);
+        console.log(user);
+        fetch("http://helixsmartlabs.in/app/dashboard/forgot.php?email=" + t1)
             .then((response) => response.json())
             .then((response) => myFunc(response[0].id))
             .catch((error) => alert(error));
@@ -57,25 +55,14 @@ const Login = ({ navigation, route }) => {
                         onSubmitEditing={() => { this.secondTextInput.focus(); }}
                         blurOnSubmit={false}
                     ></TextInput>
-                    <Text style={{ marginTop: 20, color: "#b3b3b3" }}>Password</Text>
-                    <TextInput style={{ borderBottomColor: "#8b8b8b", borderBottomWidth: 1, width: "100%", paddingLeft: 0, paddingTop: 10, paddingRight: 10, fontSize: 18, }}
-                        value={usrpass}
-                        ref={(input) => { this.secondTextInput = input; }}
-                        onChangeText={changetwo}
-                        secureTextEntry={true}
-                    ></TextInput>
-                    <TouchableOpacity
-                        style={{ marginTop: 10, alignItems: "center" }}
-                        onPress={() => navigation.navigate('Forgot')}
-                    >
-                        <Text style={{ color: "#b3b3b3" }}>Forgot Password?</Text>
-                    </TouchableOpacity>
+                    <Text style={{ marginTop: 10, color: "#b3b3b3"}}>Check Email for new Password</Text>
+                    
                 </View>
 
                 <View style={styles.bottom}>
                     <View>
                         <TouchableOpacity
-                            onPress={() => updateData(usrinp, usrpass)}
+                            onPress={() => updateData(usrinp)}
                             style={{ width: "100%", paddingRight: "10%" }}>
                             <LinearGradient
                                 colors={['#36D1DC', '#5B86E5']}
@@ -85,20 +72,10 @@ const Login = ({ navigation, route }) => {
                             >
                                 <Text
                                     style={styles.btntxt}>
-                                    Login
+                                    Reset Password
                         </Text>
                             </LinearGradient>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styles.acc}>
-                        <View><Text style={styles.acctxt}>Don't have an account?</Text></View>
-                        <View>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('Register')}
-                            >
-                                <Text style={styles.link}> Register</Text>
-                            </TouchableOpacity>
-                        </View>
                     </View>
                 </View>
 
@@ -132,4 +109,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Login
+export default Forgot

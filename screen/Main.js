@@ -7,7 +7,10 @@ import Top from './Top';
 const Main = props => {
     const { navigation } = props
     const myFunc = () => {
-            navigation.navigate('Login');
+        navigation.navigate('Login');
+    }
+    const myFuncReg = () => {
+        navigation.navigate('Register');
     }
     return (
         <View style={styles.main}>
@@ -23,7 +26,7 @@ const Main = props => {
             </View>
             <View style={styles.bottom}>
                 <TouchableOpacity
-                onPress={() => myFunc()}
+                    onPress={() => myFunc()}
                 >
                     <LinearGradient
                         colors={['#36D1DC', '#5B86E5']}
@@ -37,7 +40,9 @@ const Main = props => {
                         </Text>
                     </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => myFuncReg()}
+                >
                     <LinearGradient
                         colors={['#4c669f', '#3b5998', '#192f6a']}
                         style={styles.btn2}
@@ -56,7 +61,7 @@ const Main = props => {
 }
 
 const styles = StyleSheet.create({
-    main: { flexDirection: "column", backgroundColor:"white" },
+    main: { flexDirection: "column", backgroundColor: "white" },
     middle: { height: '40%', alignItems: "center", justifyContent: "center" },
     mainImg: { width: 271, height: 197, marginBottom: 10 },
     txt2: { fontSize: 18, textAlign: 'center', color: "#252526", fontWeight: "100", marginBottom: 20 },
